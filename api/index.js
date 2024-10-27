@@ -1,6 +1,10 @@
 import express from "express";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
+import authRoute from "./routes/auth.js";
+import usersRoute from "./routes/users.js";
+import hotelsRoute from "./routes/hotels.js";
+import roomsRoute from "./routes/rooms.js";
 
 const app = express();
 dotenv.config();
@@ -21,6 +25,20 @@ mongoose.connection.on("disconnected", () => {
 mongoose.connection.on("connected", () => {
   console.log("mongoDB connceted!");
 });
+
+// _________________________________________________________________
+
+// middlewares
+
+app.use(express.json());
+app.get("/", (req, res) => {
+  res.send("Hello first endpoint");
+});
+
+app.use("/api/auth", authRoute);
+app.use("/api/hotels", hotelsRoute);
+app.use("/api/rooms", roomsRoute);
+app.use("/api/users", usersRoute);
 
 app.listen(3000, () => {
   connect();
